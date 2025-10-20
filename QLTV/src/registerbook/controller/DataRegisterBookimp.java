@@ -4,6 +4,7 @@
  */
 package registerbook.controller;
 
+import Database.databaseConnection;
 import book.Controller.DataFuctionImplement;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
@@ -26,14 +27,16 @@ import java.text.SimpleDateFormat;
  */
 public class DataRegisterBookimp implements DataRegisterBookFuction {
 
+    public databaseConnection dbcon = new databaseConnection();
+    public MysqlDataSource data = dbcon.ketNoiSQL();
+    
+    public DataRegisterBookimp(){};
+    
     @Override
     public void readRegisterBookSQL(ArrayList<RegisterBook> listRb) {
-        DataFuctionImplement data = new DataFuctionImplement();
-        MysqlDataSource ds = data.ketNoiSQL();
-        try {
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "SELECT * FROM registerbook";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String studentId = rs.getString(1);
@@ -57,14 +60,11 @@ public class DataRegisterBookimp implements DataRegisterBookFuction {
 
     @Override
     public int writeRegisterBookSQL(RegisterBook rb) {
-        DataFuctionImplement df = new DataFuctionImplement();
-        MysqlDataSource ds = df.ketNoiSQL();
-        try {
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             SimpleDateFormat sdfappoint = new SimpleDateFormat("dd/MM/yyyy");
             String sql = "INSERT INTO registerbook VALUES (?,?,?,?,?,?,?)";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, rb.getStudentId());
             ps.setString(2, rb.getBookId());
             ps.setInt(3, rb.getAmountBook());
@@ -83,16 +83,13 @@ public class DataRegisterBookimp implements DataRegisterBookFuction {
 
     @Override
     public int updateRegisterBookSQL(RegisterBook rb, String bookId, String studentId) {
-        DataFuctionImplement df = new DataFuctionImplement();
-        MysqlDataSource ds = df.ketNoiSQL();
-        try { 
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             SimpleDateFormat sdfappoint = new SimpleDateFormat("dd/MM/yyyy");
             String sql = "Update registerbook SET studentID = ?, bookID = ? , amount = ?,"
                     + "borrowDate = ?, appointDate = ? , payDate = ? , "
                     + "giveBookBack = ? WHERE studentID = ? AND bookID = ?";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, rb.getStudentId());
             ps.setString(2, rb.getBookId());
             ps.setInt(3, rb.getAmountBook());
@@ -121,17 +118,13 @@ public class DataRegisterBookimp implements DataRegisterBookFuction {
             for (RegisterBook e : listRb) {
                 if (e.getStudentId().equalsIgnoreCase(studentId)) {
                     listSeachRB.add(e);
-
                 }
-
             }
 
         } else {
             System.out.println("danh sách rỗng");
-
         }
         return listSeachRB;
-
     }
 
     @Override
@@ -141,17 +134,13 @@ public class DataRegisterBookimp implements DataRegisterBookFuction {
             for (RegisterBook e : listRb) {
                 if (e.getBookId().equalsIgnoreCase(bookId)) {
                     listSeachRB.add(e);
-
                 }
-
             }
 
         } else {
             System.out.println("danh sách rỗng");
-
         }
         return listSeachRB;
-
     }
 
     @Override
@@ -173,13 +162,9 @@ public class DataRegisterBookimp implements DataRegisterBookFuction {
 
     @Override
     public int deleteRegisterBookSQL(RegisterBook rb) {
-        DataFuctionImplement dataFuctionImplement = new DataFuctionImplement();
-
-        MysqlDataSource ds = dataFuctionImplement.ketNoiSQL();
-        try {
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "DELETE FROM registerbook WHERE studentID = ? AND bookID = ?";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, rb.getStudentId());
             ps.setString(2, rb.getBookId());
             return ps.executeUpdate();

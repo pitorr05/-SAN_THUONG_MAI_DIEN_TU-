@@ -4,7 +4,7 @@
  */
 package student.controller;
 
-import book.Controller.DataFuctionImplement;
+import Database.databaseConnection;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,23 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 
-/**
- *
- * @author DELL
- */
 public class DataStudentFuctionImp implements DataStudentFunction {
     
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public databaseConnection dbcon = new databaseConnection();
+    public MysqlDataSource data = dbcon.ketNoiSQL();
     
     @Override
     public void readStudentSQL(ArrayList<Student> listst) {
-        DataFuctionImplement data = new DataFuctionImplement();
-        MysqlDataSource ds = data.ketNoiSQL();
-        try {
-            Connection conn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "SELECT * FROM student";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -56,12 +49,10 @@ public class DataStudentFuctionImp implements DataStudentFunction {
            ex.printStackTrace();
         }
     }
-     @Override
+    
+    @Override
     public int insertStudent(Student s) {
-        DataFuctionImplement data_1 = new DataFuctionImplement();
-        MysqlDataSource data = data_1.ketNoiSQL();
-        try {
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "INSERT INTO Student VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, s.getStudentId());
@@ -74,7 +65,8 @@ public class DataStudentFuctionImp implements DataStudentFunction {
             ps.setString(8, s.getPhone());
             ps.setString(9, s.getEmail());
             ps.setString(10,s.getPassword());
-            return ps.executeUpdate();
+            int row = ps.executeUpdate();
+            return row;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -84,10 +76,7 @@ public class DataStudentFuctionImp implements DataStudentFunction {
     
     @Override  
     public int updateStudent(Student s) {
-        DataFuctionImplement data_1 = new DataFuctionImplement();
-        MysqlDataSource data = data_1.ketNoiSQL();
-        try {
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "UPDATE Student SET nameS = ? , gender = ?,"
                     + " birthdayS = ?, class = ? , address  = ?, marjor = ?,"
                     + " phone=?, mail=?, passwd=? WHERE studentId = ?";
@@ -102,22 +91,23 @@ public class DataStudentFuctionImp implements DataStudentFunction {
             ps.setString(8, s.getEmail());
             ps.setString(9,s.getPassword());
             ps.setString(10,s.getStudentId());
-           return ps.executeUpdate();
+            int row = ps.executeUpdate();
+            return row;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return -1;
     }
+    
     @Override
     public int delStudent(Student s) {
-        DataFuctionImplement data_1 = new DataFuctionImplement();
-        MysqlDataSource data = data_1.ketNoiSQL();
-        try (  java.sql.Connection conn = data.getConnection()) {
+        try ( Connection conn = data.getConnection() ) {
             String sql = "DELETE FROM student WHERE studentId = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, s.getStudentId());
-            ps.executeUpdate();
+            int row = ps.executeUpdate();
+            return row;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -474,7 +474,7 @@ public class StudentForm extends javax.swing.JFrame {
 
     public boolean validateForm() {
         return !txtStudentId.getText().isEmpty() && !txtName.getText().isEmpty()
-                && !check_gender() && !txtDob.getText().isEmpty()
+                && checkGender() && !txtDob.getText().isEmpty()
                 && !txtAddress.getText().isEmpty() && comboboxCategory.getSelectedItem() != null
                 && !txtEmail.getText().isEmpty() && !txtSdt.getText().isEmpty()
                 && comboboxCategory.getSelectedItem() != null;
@@ -809,16 +809,12 @@ public class StudentForm extends javax.swing.JFrame {
         return id;
     }
 
-    private boolean check_gender() {
-        return !(rbtnBoy.isSelected() || rbtnGirl.isSelected());
+    private boolean checkGender() {
+        return rbtnBoy.isSelected() || rbtnGirl.isSelected();
     }
 
     private void takeGender(Student s) {
-        if (rbtnBoy.isSelected()) {
-            s.setGender("Nam");
-
-        } else {
-            s.setGender("Nữ");
-        }
+        s.setGender(rbtnBoy.isSelected() ? "Nam" : "Nữ");
     }
+    
 }

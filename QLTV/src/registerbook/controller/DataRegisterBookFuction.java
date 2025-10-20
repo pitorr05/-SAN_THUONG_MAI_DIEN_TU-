@@ -4,7 +4,7 @@
  */
 package registerbook.controller;
 
-//import com.mysql.cj.jdbc.MysqlDataSource;
+
 import java.util.ArrayList;
 import registerbook.model.RegisterBook;
 
@@ -13,6 +13,7 @@ import registerbook.model.RegisterBook;
  * @author DELL
  */
 public interface DataRegisterBookFuction {
+    
    void readRegisterBookSQL(ArrayList<RegisterBook> listRb);
    int writeRegisterBookSQL(RegisterBook rb);
    int updateRegisterBookSQL(RegisterBook rb,String bookId, String studentId);
@@ -20,10 +21,5 @@ public interface DataRegisterBookFuction {
    ArrayList<RegisterBook> seachByStudentId(ArrayList<RegisterBook> listRb,String studentId);
    ArrayList<RegisterBook> seachByBookId(ArrayList<RegisterBook> listRb, String bookId);
    ArrayList<RegisterBook> seachByGiveBookBack(ArrayList<RegisterBook> listRb, String gbb);
-  
-   
-   
-   
-   
     
 }

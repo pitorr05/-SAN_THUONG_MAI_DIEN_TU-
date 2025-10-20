@@ -5,7 +5,6 @@
 package book.Controller;
 
 import book.Model.Book;
-import com.mysql.cj.jdbc.MysqlDataSource;
 import java.util.ArrayList;
 
 /**
@@ -13,17 +12,11 @@ import java.util.ArrayList;
  * @author DELL
  */
 public interface DataFuction  {
-    String USER_NAME = "root";
-    String PASSWD = "lehailongt";
-    String DB_NAME = "QLTV";
-    int PORT = 3306;
-    String SERVER_NAME = "localhost";
-    MysqlDataSource ketNoiSQL();
-    void readBookSQL(ArrayList<Book> listBook);
-    int writeBookSQL(Book b);
-    int updateBookSQL(Book b);
-    int delBookSQL(Book b);
-    ArrayList<Book> seachByNameBook(ArrayList<Book> listBook,String bookName);
-    ArrayList<Book> seachByAuthor(ArrayList<Book> listBook, String authorName);
-    Book seachBookId(ArrayList<Book> listBook,String bookId); 
+    public void readBookSQL(ArrayList<Book> listBook);
+    public int writeBookSQL(Book b);
+    public int updateBookSQL(Book b);
+    public int delBookSQL(Book b);
+    public ArrayList<Book> seachByNameBook(ArrayList<Book> listBook,String bookName);
+    public ArrayList<Book> seachByAuthor(ArrayList<Book> listBook, String authorName);
+    public Book seachBookId(ArrayList<Book> listBook,String bookId); 
 }

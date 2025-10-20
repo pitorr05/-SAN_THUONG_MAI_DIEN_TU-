@@ -14,6 +14,7 @@ import java.util.Objects;
  * @author DELL
  */
 public class Book  {
+    
     public static int ID = 1000;
     private String bookId;
     private String name;
@@ -23,9 +24,7 @@ public class Book  {
     private float price;
     private int amount;
 
-    public Book() 
-    {
-    }
+    public Book(){};
 
     public Book(String bookId, String name) 
     {
@@ -83,9 +82,9 @@ public class Book  {
     }
 
     public void setAuthor(String author) throws InValidAuthorException {
-         DataInValidImplement datainvalid = new DataInValidImplement();
+        DataInValidImplement datainvalid = new DataInValidImplement();
         if(datainvalid.inValidAuthorException(author)){
-         this.author = author;
+            this.author = author;
         }
        
     }
@@ -106,7 +105,7 @@ public class Book  {
     public void setPrice(String price) throws InValidPriceException {
         DataInValidImplement datainvalid = new DataInValidImplement();
         if(datainvalid.inVaildPriceException(price)){
-          this.price = Float.parseFloat(price);
+            this.price = Float.parseFloat(price);
         }
        
     }
@@ -142,6 +141,5 @@ public class Book  {
         final Book other = (Book) obj;
         return Objects.equals(this.bookId, other.bookId);
     }
-    
     
 }

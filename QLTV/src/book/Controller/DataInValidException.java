@@ -16,7 +16,7 @@ public interface DataInValidException {
      * @return
      * @throws book.Controller.InValidAuthorException
      */
-    Boolean inValidAuthorException(String author)  throws InValidAuthorException;
+    public Boolean inValidAuthorException(String author)  throws InValidAuthorException;
 
     /**
      *
@@ -24,6 +24,6 @@ public interface DataInValidException {
      * @return
      * @throws book.Controller.InValidPriceException
      */
-    Boolean inVaildPriceException(String price) throws InValidPriceException;
+    public Boolean inVaildPriceException(String price) throws InValidPriceException;
     
 }

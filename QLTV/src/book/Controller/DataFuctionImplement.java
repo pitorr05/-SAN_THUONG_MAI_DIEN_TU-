@@ -4,6 +4,7 @@
  */
 package book.Controller;
 
+import Database.databaseConnection;
 import book.Model.Book;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
@@ -11,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,23 +21,12 @@ import java.util.regex.Pattern;
  */
 public class DataFuctionImplement implements DataFuction {
 
-    @Override
-    public MysqlDataSource ketNoiSQL() {
-        MysqlDataSource data = new MysqlDataSource();
-        data.setUser(DataFuction.USER_NAME);
-        data.setPassword(DataFuction.PASSWD);
-        data.setDatabaseName(DataFuction.DB_NAME);
-        data.setPortNumber(DataFuction.PORT);
-        data.setServerName(DataFuction.SERVER_NAME);
-
-        return data;
-    }
-
+    private final databaseConnection dbcon = new databaseConnection();
+    private final MysqlDataSource data = dbcon.ketNoiSQL();
+    
     @Override
     public void readBookSQL(ArrayList<Book> listBook) {
-        MysqlDataSource data = ketNoiSQL();
-        try {
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "SELECT * FROM book";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
@@ -64,9 +52,7 @@ public class DataFuctionImplement implements DataFuction {
 
     @Override
     public int writeBookSQL(Book b) {
-        MysqlDataSource data = ketNoiSQL();
-        try {
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "INSERT INTO BOOK VALUES(?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, b.getBookId());
@@ -76,8 +62,9 @@ public class DataFuctionImplement implements DataFuction {
             ps.setString(5, b.getProducer());
             ps.setFloat(6, b.getPrice());
             ps.setInt(7, b.getAmount());
-            ps.executeUpdate();
-
+            int row = ps.executeUpdate();
+            return row;
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -86,9 +73,7 @@ public class DataFuctionImplement implements DataFuction {
 
     @Override
     public int updateBookSQL(Book b) {
-        MysqlDataSource data = ketNoiSQL();
-        try {
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "UPDATE book SET nameB = ? , category = ?,"
                     + " author = ?, producer = ? , price  = ?, count = ? WHERE bookID = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -99,7 +84,8 @@ public class DataFuctionImplement implements DataFuction {
             ps.setFloat(5, b.getPrice());
             ps.setInt(6, b.getAmount());
             ps.setString(7, b.getBookId());
-            ps.executeUpdate();
+            int row = ps.executeUpdate();
+            return row;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -110,13 +96,13 @@ public class DataFuctionImplement implements DataFuction {
 
     @Override
     public int delBookSQL(Book b) {
-        MysqlDataSource data = ketNoiSQL();
-        try { 
-            Connection conn = data.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "DELETE FROM book WHERE bookId = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, b.getBookId());
-            ps.executeUpdate();
+            int row = ps.executeUpdate();
+            return row;
+            
         }catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -4,6 +4,7 @@
  */
 package adminstrator.Controller;
 
+import Database.databaseConnection;
 import adminstrator.model.Employee;
 import book.Controller.DataFuctionImplement;
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -22,15 +23,14 @@ import registerbook.model.RegisterBook;
  */
 public class DataAdminFuction {
 
+    private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private final  databaseConnection dbcon = new databaseConnection();
+    private final  MysqlDataSource data = dbcon.ketNoiSQL();
+    
     public DataAdminFuction(){};
     
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
     public void readListAdmin(ArrayList<Employee> listE) {
-        DataFuctionImplement data = new DataFuctionImplement();
-        MysqlDataSource ds = data.ketNoiSQL();
-        try {
-            Connection conn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "SELECT * FROM employee";
             PreparedStatement per = conn.prepareStatement(sql);
             ResultSet rs = per.executeQuery();
@@ -54,10 +54,7 @@ public class DataAdminFuction {
     }
 
     public int updateAdmin(Employee emp) {
-        try {
-            DataFuctionImplement data = new DataFuctionImplement();
-            MysqlDataSource ds = data.ketNoiSQL();
-            Connection conn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             String sql = "UPDATE employee SET passwd = ? WHERE tk = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, emp.getPassword());
@@ -72,14 +69,11 @@ public class DataAdminFuction {
     }
     
     public int writeRegisterBookSQL(RegisterBook rb) {
-        DataFuctionImplement df = new DataFuctionImplement();
-        MysqlDataSource ds = df.ketNoiSQL();
-        try {
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             SimpleDateFormat sdfappoint = new SimpleDateFormat("dd/MM/yyyy");
             String sql = "INSERT INTO registerbook VALUES (?,?,?,?,?,?,?)";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, rb.getStudentId());
             ps.setString(2, rb.getBookId());
             ps.setInt(3, rb.getAmountBook());
@@ -97,12 +91,9 @@ public class DataAdminFuction {
     }
     
     public boolean checkExistAccountAdminSQL(String tk) {
-        DataFuctionImplement df = new DataFuctionImplement();
-        MysqlDataSource ds = df.ketNoiSQL();
-
-        try (Connection cn = ds.getConnection()) {
+        try ( Connection conn = data.getConnection() ) {
             String sql = "SELECT * FROM employee WHERE tk = ?";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, tk);
 
             ResultSet rs = ps.executeQuery();
@@ -118,13 +109,10 @@ public class DataAdminFuction {
     }
     
     public void writeRegisterAdminSQL(Employee newEmployee) {
-        DataFuctionImplement df = new DataFuctionImplement();
-        MysqlDataSource ds = df.ketNoiSQL();
-        try {
-            Connection cn = ds.getConnection();
+        try ( Connection conn = data.getConnection() ) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sql = "INSERT INTO employee VALUES (?,?,?,?,?,?,?)";
-            PreparedStatement ps = cn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, newEmployee.getNameTK());
             ps.setString(2, newEmployee.getPassword());
             ps.setString(3, newEmployee.getName());
