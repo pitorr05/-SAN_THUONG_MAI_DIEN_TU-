@@ -1,3 +1,11 @@
+
+-- select * from book;
+-- select * from registerbook;
+-- select * from employee;
+-- select * from student;
+
+-- desc employee;
+
 drop database if exists QLTV;
 CREATE DATABASE QLTV;
 
@@ -16,15 +24,15 @@ CREATE TABLE book(
 );
 
 CREATE TABLE employee(
-	tk varchar(50) NULL,
+	tk varchar(50) NOT NULL,
 	passwd varchar(50) NULL,
 	name varchar(20) NULL,
 	gender varchar(5) NULL,
 	birthdayS date NULL,
 	address varchar(50) NULL,
-	phone varchar(11) NULL
+	phone varchar(11) NULL,
+    PRIMARY KEY ( tk )
 );
-
 
 CREATE TABLE registerbook(
 	studentId varchar(20) NOT NULL,
