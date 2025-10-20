@@ -1,0 +1,69 @@
+note: này là dùng java.awt còn java.swing là phiên bản cao hơn của nó -> chắc chuyển sang không khó.
+
+link youtube
+https://www.youtube.com/watch?v=189Gpfd0YuI
+
+B1: -> tạo database	
+mở mysql workbench, copy code file code_sql.sql vào chạy xanh hết là ổn
+
+B2:
+mở netbean, open project
+
+B3:
+(dùng jdbc kết nối mysql nên nó phải có thư viện jdbc.jar này tớ xem trên mạng 
+project thường nên add thử công mỗi lần, còn dùng mavern thì viết porm.xml là xong.)
+   chuột phải vào libraries hiện ra "add jar/Folder" ấn rùi tìm file "mysql-connector-j-9.4.0.jar" trong project đó
+
+B4: -> chỉnh link liên kết với database
+package book.Controller   -> DataFunction.java  ->
+user_name: thường là root
+password: tùy mỗi người mở nếu không có thì bỏ trống
+
+
+B5:
+run file "HomeLoginForm.java" trong pack Login là được, này tớ nghĩ chắc mình cài đặt hàm main thế nào để run project là nó mở file đó luôn đỡ phải chọn.
+tk: admin
+mk: admin
+này trên database tùy chỉnh.
+còn user sinh viên thì nhiều á.
+
+-----------------------
+
+test chức năng thui còn giao diện, nút bấm to nhỏ tinh chỉnh sau, hình ảnh sau. Gọi là ý tưởng xong thêm nếu đc.<
+test chắc cũng nhiều lỗi.
+
+frame quản lí sinh viên có:
+
+- tìm kiếm theo tên, mã, lớp
+- thêm sinh viên theo form
+- sửa sinh viên
+- xóa 1 hoặc nhiều sinh viên.
+- làm mới ????
+
+
+frame quản lí sách có:
+
+- tìm kiếm sách theo tên, mã, tên tác giả
+- thêm sách theo form
+- sửa sách
+- xóa sách
+- làm mới ???
+
+
+frame quản lí mượn trả
+này hình như là admin -> toàn quyền quyết định cho sinh trả mặc dù thực tế chưa trả, .....
+
+- tìm kiếm sinh viên theo
++ đã trả ???
++ đang mượn theo mã sinh viên 
++ Sách mượn theo mã sách
+
+- xem thống kê quả hạn, .. có sinh viên + sách + trạng thái..
+
+
+
+
+lỗi kéo xanh full xóa không hết được
+
+
+
