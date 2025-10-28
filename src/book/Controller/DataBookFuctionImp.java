@@ -1,0 +1,144 @@
+
+package book.Controller;
+
+import Database.DatabaseConnection;
+import book.Model.Book;
+import com.mysql.cj.jdbc.MysqlDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+
+public class DataBookFuctionImp implements DataBookFuction {
+
+    private final DatabaseConnection dbcon = new DatabaseConnection();
+    private final MysqlDataSource data = dbcon.ketNoiSQL();
+    
+    @Override
+    public void readBookSQL(ArrayList<Book> listBook) {
+        try ( Connection conn = data.getConnection() ) {
+            String sql = "SELECT * FROM book";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                String bookId = resultSet.getString(1);
+                String nameb = resultSet.getString(2);
+                String category = resultSet.getString(3);
+                String author = resultSet.getString(4);
+                String producer = resultSet.getString(5);
+                String price = resultSet.getString(6);
+                int count = resultSet.getInt(7);
+                Book b = new Book(bookId, nameb, category, author, producer, price, count);
+                listBook.add(b);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (InValidPriceException | InValidAuthorException ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    @Override
+    public int writeBookSQL(Book b) {
+        try ( Connection conn = data.getConnection() ) {
+            String sql = "INSERT INTO BOOK VALUES(?,?,?,?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, b.getBookId());
+            ps.setString(2, b.getName());
+            ps.setString(3, b.getCategory());
+            ps.setString(4, b.getAuthor());
+            ps.setString(5, b.getProducer());
+            ps.setFloat(6, b.getPrice());
+            ps.setInt(7, b.getAmount());
+            int row = ps.executeUpdate();
+            return row;
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int updateBookSQL(Book b) {
+        try ( Connection conn = data.getConnection() ) {
+            String sql = "UPDATE book SET nameB = ? , category = ?,"
+                    + " author = ?, producer = ? , price  = ?, count = ? WHERE bookID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, b.getName());
+            ps.setString(2, b.getCategory());
+            ps.setString(3, b.getAuthor());
+            ps.setString(4, b.getProducer());
+            ps.setFloat(5, b.getPrice());
+            ps.setInt(6, b.getAmount());
+            ps.setString(7, b.getBookId());
+            int row = ps.executeUpdate();
+            return row;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+
+    }
+
+    @Override
+    public int delBookSQL(Book b) {
+        try ( Connection conn = data.getConnection() ) {
+            String sql = "DELETE FROM book WHERE bookId = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, b.getBookId());
+            int row = ps.executeUpdate();
+            return row;
+            
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public ArrayList<Book> seachByNameBook(ArrayList<Book> listBook, String bookName) {
+
+        ArrayList<Book> listseach = new ArrayList<>();
+        String regex = "^.*" + bookName + ".*$";
+        Pattern p = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
+        for (Book e : listBook) {
+            Matcher m = p.matcher(e.getName());
+            if (m.matches()) {
+                listseach.add(e);
+            }
+        }
+        return listseach;
+
+    }
+
+    @Override
+    public ArrayList<Book> seachByAuthor(ArrayList<Book> listBook, String authorName) {
+        ArrayList<Book> listseach = new ArrayList<>();
+        for (Book e : listBook) {
+            String[] fullname = e.getAuthor().split("\\s+");
+            String firstName = fullname[fullname.length-1];
+            if (firstName.equalsIgnoreCase(authorName)) {
+                listseach.add(e);
+            }
+        }
+        return listseach;
+    }
+
+    @Override
+    public Book seachBookId(ArrayList<Book> listBook, String bookid) {
+        for (Book e : listBook) {
+            if (e.getBookId().equalsIgnoreCase(bookid)) {
+                return e;
+            }
+        }
+        return null;
+
+    }
+
+}
