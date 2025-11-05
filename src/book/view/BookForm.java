@@ -97,12 +97,15 @@ public class BookForm extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        buttonGroupSeachBook.add(rbtnSeachNameBook);
         rbtnSeachNameBook.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         rbtnSeachNameBook.setText("Tìm Kiếm Theo Tên Sách");
 
+        buttonGroupSeachBook.add(rbtnSeachBookId);
         rbtnSeachBookId.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         rbtnSeachBookId.setText("Tìm Kiếm Theo Mã Sách");
 
+        buttonGroupSeachBook.add(rbtnSeachAuthorName);
         rbtnSeachAuthorName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         rbtnSeachAuthorName.setText("Tìm Kiếm Theo Tên Tác giả");
 
@@ -126,15 +129,15 @@ public class BookForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbtnSeachNameBook)
-                    .addComponent(rbtnSeachAuthorName)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(rbtnSeachBookId)
-                        .addGap(29, 29, 29)
-                        .addComponent(txtSeach, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)
-                        .addComponent(btnSeach, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rbtnSeachNameBook, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(rbtnSeachAuthorName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                        .addComponent(rbtnSeachBookId, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(56, 56, 56)
+                .addComponent(txtSeach, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSeach, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -374,6 +377,10 @@ public class BookForm extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableBook);
+        if (tableBook.getColumnModel().getColumnCount() > 0) {
+            tableBook.getColumnModel().getColumn(0).setMinWidth(40);
+            tableBook.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
